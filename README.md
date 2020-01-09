@@ -25,6 +25,7 @@ dotnet GarminExport.dll -u ***garmin login email address*** -p ***garmin login p
 | Command   |      Description      |
 |:----------|:-------------|
 | -o |Relative or absolute output path; Default "./export" |
+| --origin | if true Fit-File will be exported, otherwise gpx-File; Default: false |
 | --from-date	 |Start date in format yyy-mm-dd   |
 | --save-activity-result |Saves the server response of an individual activity in the output folder as a file ***activityId***.json   |
 | --type	 |Sync type: activites, wellness, all   |
