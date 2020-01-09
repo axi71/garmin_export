@@ -19,6 +19,29 @@ namespace GarminExport.Activities
             this.Session = session;
         }
 
+        public void DownloadGpxActivity(string url, string activityId, string outputPath, DateTime creationTime)
+        {
+            Console.WriteLine("Download url {0}", url);
+            WebRequest webRequest = WebRequest.Create(url);
+            HttpWebRequest httpWebRequest = webRequest as HttpWebRequest;
+            httpWebRequest.CookieContainer = Session.Cookies;
+
+            var response = httpWebRequest.GetResponse();
+
+            var targetDirectory = FileUtils.CreateDirectoryIfNotExists(outputPath);
+            Stream stream = response.GetResponseStream();
+            var encoding = ASCIIEncoding.ASCII;
+            string path = targetDirectory.FullName + "/" + activityId + ".gpx";
+            using (var reader = new System.IO.StreamReader(response.GetResponseStream(), encoding))
+            {
+                string responseText = reader.ReadToEnd();
+                using (StreamWriter sw = File.CreateText(path))
+                {
+                    sw.WriteLine(responseText);
+                }
+            }
+        }
+
         public void DownloadActivity(string url, string outputPath, DateTime creationTime)
         {
             Console.WriteLine("Download url {0}", url);
@@ -29,7 +52,7 @@ namespace GarminExport.Activities
             var response = httpWebRequest.GetResponse();
 
             var targetDirectory = FileUtils.CreateDirectoryIfNotExists(outputPath);
-
+            
             using (ZipInputStream inputStream = new ZipInputStream(response.GetResponseStream()))
             {
                 ZipEntry theEntry;

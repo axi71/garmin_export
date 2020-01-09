@@ -110,7 +110,11 @@ namespace GarminExport
             {
                 try
                 {
-                    downloadService.DownloadActivity("http://connect.garmin.com/proxy/download-service/files/activity/" + activity.ActivityId, options.OutputPath + ACTIVITY_DIR, activity.StartTimeLocal);
+                    if (options.Origin)
+                        downloadService.DownloadActivity("http://connect.garmin.com/proxy/download-service/files/activity/" + activity.ActivityId, options.OutputPath + ACTIVITY_DIR, activity.StartTimeLocal);
+                    else 
+                        downloadService.DownloadGpxActivity("http://connect.garmin.com/proxy/download-service/export/gpx/activity/" + activity.ActivityId, activity.ActivityId,  options.OutputPath + ACTIVITY_DIR, activity.StartTimeLocal);
+
                 }
                 catch (Exception ex)
                 {
